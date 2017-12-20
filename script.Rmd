@@ -1,6 +1,8 @@
 ---
 title: "<center> HR analytics </center>"
 output:
+  word_document: default
+  pdf_document: default
   html_document:
     code_folding: hide
     number_sections: yes
