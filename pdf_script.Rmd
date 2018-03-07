@@ -1,0 +1,98 @@
+---
+title: "Untitled"
+author: "James Kim"
+date: "December 20, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data to insight to decision {.tabset}
+
+<br/>
+
+## Business understanding
+
+Our example concerns a big company that wants to understand why some of their best and most experienced employees are leaving prematurely. The company also wishes to predict which valuable employees will leave next.
+
+<br/>
+<hr/>
+<br/>
+
+## Analytic solution 
+
+We have two goals: first, we want to understand why valuable employees leave, and second, we want to predict who will leave next.
+
+Therefore, we propose to work with the HR department to gather relevant data about the employees and to communicate the significant effect that could explain and predict employees' departure.
+
+<br/> 
+<hr/>
+<br/>
+
+## Assessing Feasibility
+
+Unfortunately, managers didn't kept an organised record of why people have left, but we can still find some explications in our data set provided by the HR department.
+
+For our 15 000 employees we know: satisfaction level, latest evaluation (yearly), number of project worked on, average monthly hours, time spend in the company (in years), work accident (within the past 2 years), promotion within the past 5 years, department and salary. 
+
+<br/>
+<hr/>
+<br/>
+
+## Analytical Base Table
+
+This is the database from the HR department: (Note that it doesn't take into account the person that have been fired, transferred or hired in the past year...)
+
+
+
+```{r, echo=F, message=F, warning=F}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggvis)
+library(corrplot)
+library(DT)
+hr = read.table('HR_comma_sep.csv', header = T,sep=',')
+head(hr)
+```
+
+
+<br/>
+<hr/>
+<br/>
+
+
+# Data exploration
+
+At this stage we want to understand the data that compose our Analytical Base Table (ABT) and assess where the quality of it might suffer. 
+
+## Data quality report
+
+This table describe the characteristics of each features of our ABT. We can see different statistical measures of central tendency and variation. For example we can see that our attrition rate is equal to 24%, the satisfaction level is around 62% and the performance average is around 71%. We see that on average people work on 3 to 4 projects a year and about 200 hours per months.
+
+```{r, echo=F, message=F, warning=F}
+# Library needed:
+summary(hr)
+```
+
+<br/>
+<hr/>
+<br/>
+
+
+
+## First visualisations {.tabset}
+
+<br/>
+
+### Graph
+
+This graph present the correlations between each variables. The size of the bubbles reveal the significance of the correlation, while the colour present the direction (either positive or negative).
+
+```{r, message=F, warning=F, fig.width=10}
+HR_correlation <- hr %>% select(satisfaction_level:promotion_last_5years)
+M <- cor(HR_correlation)
+corrplot(M, method="circle")
+```
